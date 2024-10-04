@@ -43,28 +43,12 @@ export default {
     </div>
     <div v-else>
         <dl>
-            <details>
+            <details class="group">
                 <summary
                     class="flex w-full cursor-pointer select-none justify-between text-left text-base font-semibold leading-7 text-slate-900 group-open:text-indigo-600"
                 >
-                    Tem um cupom de desconto?
-                    <svg
-                        class="ml-4 mt-0.5 h-6 w-6 flex-none stroke-slate-700 group-open:stroke-indigo-500"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path
-                            d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
-                            class="group-open:hidden"
-                        />
-                        <path
-                            d="M2 11L8.16086 5.31305C8.35239 5.13625 8.64761 5.13625 8.83914 5.31305L15 11"
-                            class="[&amp;::-webkit-details-marker]:hidden"
-                        />
-                    </svg>
+                    <span>Tem um cupom de desconto?</span>
+                    <i class="bi bi-chevron-down group-open:rotate-180"></i>
                 </summary>
                 <div class="relative mt-2 rounded-md shadow-sm">
                     <input

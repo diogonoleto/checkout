@@ -1,10 +1,11 @@
 <script>
+import CouponForm from "@/Components/checkout/CouponForm.vue";
 import WizardForm from "@/Components/checkout/WizardForm.vue";
 import successful from "@/assets/img/successful.png";
 
 export default {
     name: "Checkout",
-    components: { WizardForm },
+    components: { WizardForm, CouponForm },
     data() {
         return {
             coupon: "",
@@ -40,6 +41,8 @@ export default {
                     },
                 ],
                 discont: "10% - R$ 31,80",
+                delivery_fee: "+ R$ 29,00",
+                service_fee: "18% + R$ 45,29",
                 subTotal: "R$ 318,00",
                 total: "R$ 1.387,00",
             },
@@ -52,6 +55,9 @@ export default {
         },
         removeCart(e) {
             this.cart.items = this.cart.items.filter((i) => i.id != e.id);
+        },
+        addCoupon() {
+            console.log(this.coupon)
         },
         finalizePurchase(e) {
             this.confirmation = true;
@@ -156,60 +162,9 @@ export default {
                             </template>
                         </ul>
                         <div
-                            class="p-4 border-b border-dashed dark:border-defaultborder/10"
+                            class="px-4 py-6 border-b border-dashed dark:border-defaultborder/10"
                         >
-                            <div
-                                class="flex items-center justify-between flex-wrap"
-                                v-if="coupon !== ''"
-                            >
-                                <div
-                                    class="text-[0.75rem] font-semibold bg-primary/10 text-primary p-1 rounded-full"
-                                >
-                                    {{ coupon.name }}
-                                </div>
-                                <div class="text-success">COUPON APPLIED</div>
-                            </div>
-                            <div v-else>
-                                <dl class="mt-2 divide-y divide-slate-100">
-                                    <details
-                                        class="group py-4 marker:content-['']"
-                                    >
-                                        <summary
-                                            class="flex w-full cursor-pointer select-none justify-between text-left text-base font-semibold leading-7 text-slate-900 group-open:text-indigo-600"
-                                        >
-                                            Tem um cupom de desconto?
-                                            <svg
-                                                class="ml-4 mt-0.5 h-6 w-6 flex-none stroke-slate-700 group-open:stroke-indigo-500"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-                                                <path
-                                                    d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
-                                                    class="group-open:hidden"
-                                                />
-                                                <path
-                                                    d="M2 11L8.16086 5.31305C8.35239 5.13625 8.64761 5.13625 8.83914 5.31305L15 11"
-                                                    class="[&amp;::-webkit-details-marker]:hidden"
-                                                />
-                                            </svg>
-                                        </summary>
-                                        <div class="pb-6 pt-6">
-                                            <div
-                                                class="prose prose-slate max-w-none prose-a:font-semibold prose-a:text-indigo-600 hover:prose-a:text-indigo-500"
-                                            >
-                                                <input
-                                                    name="coupon"
-                                                    id="coupon"
-                                                    class="form-control w-full !rounded-md"
-                                                />
-                                            </div>
-                                        </div>
-                                    </details>
-                                </dl>
-                            </div>
+                            <coupon-form />
                         </div>
                         <div
                             class="p-4 border-b border-dashed dark:border-defaultborder/10"
@@ -241,21 +196,22 @@ export default {
                                     class="text-[#8c9097] dark:text-white/50 opacity-[0.7]"
                                 >
                                     Taxa da entrega
+
                                 </div>
                                 <div
                                     class="font-semibold text-[0.875rem] text-danger"
                                 >
-                                    - R$ 29,00
+                                    {{ cart.delivery_fee }}
                                 </div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div
                                     class="text-[#8c9097] dark:text-white/50 opacity-[0.7]"
                                 >
-                                    Taxa de Serviço (18%)
+                                    Taxa de Serviço
                                 </div>
                                 <div class="font-semibold text-[0.875rem]">
-                                    - R$ 45,29
+                                    {{ cart.service_fee }}
                                 </div>
                             </div>
                         </div>

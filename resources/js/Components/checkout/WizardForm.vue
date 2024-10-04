@@ -3,7 +3,7 @@ import { mask } from "vue-the-mask";
 import NavLink from "@/Components/NavLink.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { phone, cnpjCpf } from "@/validators/validators";
+import { phone, cnpjCpf } from "@/Validators/Validators.ts";
 
 const shippingTest = {
     name: "Diogo Noleto",
@@ -32,32 +32,32 @@ export default {
     data() {
         return {
             shipping: {
-                name: "",
-                email: "",
-                birthday: "",
-                document: "",
-                phone: "",
+                name: null,
+                email: null,
+                birthday: null,
+                document: null,
+                phone: null,
                 address: {
-                    zipcode: "",
-                    street: "",
-                    number: "",
-                    complement: "",
-                    district: "",
-                    city: "",
-                    state: "",
+                    zipcode: null,
+                    street: null,
+                    number: null,
+                    complement: null,
+                    district: null,
+                    city: null,
+                    state: null,
                 },
             },
             payment: {
-                method: "",
-                card_number: "",
-                card_name: "",
-                card_expiry_date: "",
-                cvv: "",
-                document: "",
-                installment: "",
+                method: null,
+                card_number: null,
+                card_name: null,
+                card_expiry_date: null,
+                cvv: null,
+                document: null,
+                installment: null,
             },
             delivery: {
-                method: "",
+                method: null,
             },
             paymentMethods: [
                 {
@@ -219,8 +219,8 @@ export default {
             const a = e.target.checked ? "add-cart" : "remove-cart";
             this.$emit(a, item);
         },
-        getCep () {
-            const cep = this.shipping.address.zipcode.replace(/\D/g, '');
+        getCep() {
+            const cep = this.shipping.address.zipcode.replace(/\D/g, "");
             if (cep.length !== 8) {
                 return;
             } else {
@@ -567,13 +567,17 @@ export default {
                             É para garantir que sua box chegue no endereço
                             correto.
                         </div>
-                        <div class="xl:col-span-12 col-span-12">
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div
+                            class="xl:col-span-1 col-span-3 xl:col-start-3 text-end"
+                        >
                             <button
-                                class="rounded-md text-sm font-semibold py-3 px-4 bg-primary text-white hover:bg-primary-700 w-full uppercase"
+                                class="rounded-md text-sm font-semibold py-3 px-4 bg-primary text-white hover:bg-primary-700 uppercase"
                                 @click="submitShopping()"
                             >
-                                PRÓXIMO
-                                <i class="bi bi-chevron-right mr-auto"></i>
+                                <span>PRÓXIMO</span>
+                                <i class="bi bi-chevron-right ms-4"></i>
                             </button>
                         </div>
                     </div>
@@ -592,8 +596,9 @@ export default {
                                     {{ shipping.address.street }},
                                     {{ shipping.address.number }}
                                     {{
-                                        shipping.address.complement ??
-                                        ", " + shipping.address.complement
+                                        shipping.address.complement
+                                            ? ", " + shipping.address.complement
+                                            : ""
                                     }}, {{ shipping.address.district }},
                                     {{ shipping.address.city }}-{{
                                         shipping.address.state

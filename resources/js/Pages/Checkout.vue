@@ -2,7 +2,7 @@
 import CouponForm from "@/Components/checkout/CouponForm.vue";
 import WizardForm from "@/Components/checkout/WizardForm.vue";
 import successful from "@/assets/img/successful.png";
-import PixPage from '@/Components/checkout/PixPage.vue';
+import PixPage from "@/Components/checkout/PixPage.vue";
 
 export default {
     name: "Checkout",
@@ -47,7 +47,7 @@ export default {
                 subTotal: "R$ 318,00",
                 total: "R$ 1.387,00",
             },
-            confirmation: "pix",
+            confirmation: null,
         };
     },
     methods: {
@@ -215,14 +215,20 @@ export default {
                                 </div>
                             </div>
                         </div>
-                        <div class="p-4 bg-primary rounded-b-sm text-white">
+                        <div class="p-4 bg-primary text-white border-b">
                             <div class="flex items-center justify-between">
-                                <div class="text-[0.9375rem]">Total:</div>
+                                <div class="text-[1.2rem]">Total:</div>
                                 <div
-                                    class="font-semibold text-[1rem] text-dark"
+                                    class="font-semibold text-[1.6rem] text-dark"
                                 >
                                     {{ cart.total }}
                                 </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-primary/100 rounded-b-sm text-white">
+                            <div class="font-semibold text-sm text-dark text-center">
+                                <i class="bi bi-shield-fill-check"></i>
+                                COMPRA 100% SEGURA
                             </div>
                         </div>
                     </div>
@@ -232,45 +238,7 @@ export default {
         <div
             class="grid grid-cols-12 gap-x-6"
             v-else-if="confirmation == 'boleto'"
-        >
-            <div class="xl:col-span-12 col-span-12">
-                <div class="box overflow-hidden p-[3rem] my-3 text-center">
-                    <div class="mb-[3rem]">
-                        <h5 class="text-success font-semibold text-[1.25rem]">
-                            Pagamento bem-sucedido....🤝
-                        </h5>
-                    </div>
-                    <div class="mb-[3rem] flex justify-center">
-                        <img
-                            :src="successful"
-                            alt=""
-                            class="img-fluid max-w-80"
-                        />
-                    </div>
-                    <div class="mb-6">
-                        <p class="mb-1 text-[0.875rem]">
-                            Você pode rastrear seu pedido com o ID do pedido
-                            <b>SPK#1FR</b> from
-                            <button class="link-success" href="#">
-                                <u class="text-success">Rastrear pedido</u>
-                            </button>
-                        </p>
-                        <p class="text-[#8c9097] dark:text-white/50">
-                            Obrigado por comprar conosco.
-                        </p>
-                    </div>
-                    <div>
-                        <button
-                            :href="route('checkout')"
-                            class="rounded-md text-sm font-semibold py-3 px-4 bg-primary text-white hover:bg-primary-700 uppercase"
-                        >
-                            Continue comprando!
-                            <i class="bi bi-cart ms-2"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        ></div>
         <div class="box overflow-hidden" v-else-if="confirmation == 'pix'">
             <pix-page />
         </div>

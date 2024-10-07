@@ -6,16 +6,28 @@ import { phone, cnpjCpf } from "@/Validators/Validators.ts";
 import OfferList from "./OfferList.vue";
 
 const shippingTest = {
-    name: "Diogo Noleto",
-    email: "diogo@gmail.com",
-    birthday: "04/08/1984",
-    document: "740.368.072-34",
-    phone: "(92) 98158-4393",
+    name: "",
+    email: "",
+    birthday: "",
+    document: "",
+    phone: "",
     address: {
-        zipcode: "69055080",
-        number: "96",
+        zipcode: "",
+        number: "",
     },
 };
+
+// const shippingTest = {
+//     name: "Diogo Noleto",
+//     email: "diogo@gmail.com",
+//     birthday: "04/08/1984",
+//     document: "740.368.072-34",
+//     phone: "(92) 98158-4393",
+//     address: {
+//         zipcode: "69055080",
+//         number: "96",
+//     },
+// };
 
 export default {
     components: { OfferList },

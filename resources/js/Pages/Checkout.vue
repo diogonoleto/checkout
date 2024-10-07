@@ -2,10 +2,11 @@
 import CouponForm from "@/Components/checkout/CouponForm.vue";
 import WizardForm from "@/Components/checkout/WizardForm.vue";
 import successful from "@/assets/img/successful.png";
+import PixPage from '@/Components/checkout/PixPage.vue';
 
 export default {
     name: "Checkout",
-    components: { WizardForm, CouponForm },
+    components: { WizardForm, CouponForm, PixPage },
     data() {
         return {
             coupon: "",
@@ -46,7 +47,7 @@ export default {
                 subTotal: "R$ 318,00",
                 total: "R$ 1.387,00",
             },
-            confirmation: false,
+            confirmation: "pix",
         };
     },
     methods: {
@@ -57,19 +58,17 @@ export default {
             this.cart.items = this.cart.items.filter((i) => i.id != e.id);
         },
         addCoupon() {
-            console.log(this.coupon)
+            console.log(this.coupon);
         },
         finalizePurchase(e) {
-            this.confirmation = true;
+            this.confirmation = e.payment.method;
         },
     },
 };
 </script>
 
 <template>
-    <div
-        class="relative pb-112 px-16 sm:pb-208 sm:px-64 overflow-hidden bg-auto bg-blue aboutus-banner"
-    >
+    <div class="relative px-16 sm:pb-208 sm:px-64 overflow-hidden bg-indigo">
         <div class="container flex flex-col justify-center">
             <div class="mt-[24em] pt-5 sm:pt-5 text-center">
                 <!-- <img
@@ -95,11 +94,11 @@ export default {
             <div class="xl:col-span-4 col-span-12">
                 <div class="box">
                     <div
-                        class="p-4 text-[1.2rem] border !border-t-0 !border-s-0 !border-e-0 border-b-1"
+                        class="p-4 text-[1.2rem] rounded-t-sm bg-primary text-white"
                     >
                         Resumo do Pedido
                         <span
-                            class="badge bg-primary/10 text-primary !border-b-0 !rounded-full text-[0.85rem] px-2 py-1"
+                            class="badge bg-gray-100 text-primary !border-b-0 !rounded-full text-[0.85rem] px-2 py-1"
                         >
                             {{ cart.items.length }}
                         </span>
@@ -196,7 +195,6 @@ export default {
                                     class="text-[#8c9097] dark:text-white/50 opacity-[0.7]"
                                 >
                                     Taxa da entrega
-
                                 </div>
                                 <div
                                     class="font-semibold text-[0.875rem] text-danger"
@@ -210,12 +208,14 @@ export default {
                                 >
                                     Taxa de Serviço
                                 </div>
-                                <div class="font-semibold text-[0.875rem]">
+                                <div
+                                    class="font-semibold text-[0.875rem] text-danger"
+                                >
                                     {{ cart.service_fee }}
                                 </div>
                             </div>
                         </div>
-                        <div class="p-4">
+                        <div class="p-4 bg-primary rounded-b-sm text-white">
                             <div class="flex items-center justify-between">
                                 <div class="text-[0.9375rem]">Total:</div>
                                 <div
@@ -228,6 +228,51 @@ export default {
                     </div>
                 </div>
             </div>
+        </div>
+        <div
+            class="grid grid-cols-12 gap-x-6"
+            v-else-if="confirmation == 'boleto'"
+        >
+            <div class="xl:col-span-12 col-span-12">
+                <div class="box overflow-hidden p-[3rem] my-3 text-center">
+                    <div class="mb-[3rem]">
+                        <h5 class="text-success font-semibold text-[1.25rem]">
+                            Pagamento bem-sucedido....🤝
+                        </h5>
+                    </div>
+                    <div class="mb-[3rem] flex justify-center">
+                        <img
+                            :src="successful"
+                            alt=""
+                            class="img-fluid max-w-80"
+                        />
+                    </div>
+                    <div class="mb-6">
+                        <p class="mb-1 text-[0.875rem]">
+                            Você pode rastrear seu pedido com o ID do pedido
+                            <b>SPK#1FR</b> from
+                            <button class="link-success" href="#">
+                                <u class="text-success">Rastrear pedido</u>
+                            </button>
+                        </p>
+                        <p class="text-[#8c9097] dark:text-white/50">
+                            Obrigado por comprar conosco.
+                        </p>
+                    </div>
+                    <div>
+                        <button
+                            :href="route('checkout')"
+                            class="rounded-md text-sm font-semibold py-3 px-4 bg-primary text-white hover:bg-primary-700 uppercase"
+                        >
+                            Continue comprando!
+                            <i class="bi bi-cart ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box overflow-hidden" v-else-if="confirmation == 'pix'">
+            <pix-page />
         </div>
         <div class="grid grid-cols-12 gap-x-6" v-else>
             <div class="xl:col-span-12 col-span-12">
@@ -258,7 +303,7 @@ export default {
                     </div>
                     <div>
                         <button
-                            :href="route('dashboard')"
+                            :href="route('checkout')"
                             class="rounded-md text-sm font-semibold py-3 px-4 bg-primary text-white hover:bg-primary-700 uppercase"
                         >
                             Continue comprando!

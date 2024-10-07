@@ -166,38 +166,6 @@ body {
     @apply checked:bg-primary checked:hover:bg-primary checked:active:bg-primary checked:focus:bg-primary focus:ring-primary
 }
 
-/* Start:: Checkout */
-.product-checkout .tab-style-2 .nav-item .nav-link {
-    @apply py-[0.85rem] px-[2rem];
-}
-.product-checkout .form-floating input,
-.product-checkout .form-floating textarea {
-    @apply text-[0.813rem] font-semibold;
-}
-.product-checkout .shipping-method-container,
-.product-checkout .payment-card-container {
-    @apply relative p-[0.625rem] border border-solid border-defaultborder rounded-md;
-}
-.product-checkout .shipping-method-container .form-check-input,
-.product-checkout .payment-card-container .form-check-input {
-    @apply absolute end-3 top-[1.2rem];
-}
-@media (min-width: 576px) {
-    .product-checkout .shipping-method-container .shipping-partner-details,
-    .product-checkout .shipping-method-container .saved-card-details,
-    .product-checkout .payment-card-container .shipping-partner-details,
-    .product-checkout .payment-card-container .saved-card-details {
-        @apply w-[12.5rem];
-    }
-}
-
-.checkout-payment-success {
-    @apply text-center;
-}
-.checkout-payment-success img {
-    @apply w-[200px] h-[200px];
-}
-
 .form-floating {
     @apply relative !important;
 }
@@ -211,6 +179,7 @@ body {
         @apply transition-none;
     }
 }
+
 .form-floating > .form-control-plaintext:focus,
 .form-floating > .form-control-plaintext:not(:placeholder-shown),
 .form-floating > .form-control:focus,
@@ -222,47 +191,6 @@ body {
 .was-validated .form-control:valid {
     @apply border-success !important;
 }
-
-.product-checkout .payment-card-container,
-.product-checkout .shipping-method-container {
-    @apply relative p-[0.625rem] border border-solid border-inputborder rounded-md;
-}
-
-.product-checkout .payment-card-container .form-check-input,
-.product-checkout .shipping-method-container .form-check-input {
-    @apply absolute end-3 top-[1.2rem];
-}
-
-.product-checkout .shipping-method-container .shipping-partner-details {
-    @apply w-[12.5rem];
-}
-
-.tab-style-checkout {
-    @apply border-b-0;
-}
-.tab-style-checkout .nav-item {
-    @apply me-2;
-}
-.tab-style-checkout .nav-item:last-child {
-    @apply me-0;
-}
-.tab-style-checkout .nav-item .nav-link {
-    @apply border-0;
-}
-.tab-style-checkout .nav-item .nav-link i {
-    @apply w-[1.875rem] h-[1.875rem] p-[0.4rem] rounded-[50px] bg-light text-defaulttextcolor inline-flex;
-}
-.tab-style-checkout .nav-item .nav-link:hover {
-    @apply border-0;
-}
-.tab-style-checkout .nav-item .nav-link.active {
-    @apply bg-transparent relative border-0 text-primary;
-}
-.tab-style-checkout .nav-item .nav-link.active i {
-    @apply bg-primary/10 text-primary before:absolute before:start-[45%] before:end-0 before:bottom-0 before:w-[20%] before:h-[0.175rem] before:bg-primary before:rounded-[50px] !important;
-}
-
-/* End:: Checkout */
 
 /* Start Box Styles */
 .box {
@@ -289,44 +217,6 @@ body {
     @apply border-t rounded-b-sm py-4 px-[1.25rem] text-defaultsize text-defaulttextcolor md:py-4 md:px-5 dark:border-white/10;
 }
 
-.display-1 {
-    @apply text-[5rem];
-}
-
-.display-2 {
-    @apply text-[4.5rem];
-}
-
-.display-3 {
-    @apply text-[4rem];
-}
-
-.display-4 {
-    @apply text-[3.5rem];
-}
-
-.display-5 {
-    @apply text-[3rem];
-}
-
-.display-6 {
-    @apply text-[2.5rem];
-}
-
-.overlay-box {
-    @apply relative overflow-hidden text-white/90 before:absolute before:bg-black/20 before:inset-0;
-}
-.overlay-box .box-header {
-    @apply border-white/10;
-}
-.overlay-box .box-footer {
-    @apply border-white/10;
-}
-
-.over-content-bottom {
-    @apply top-auto;
-}
-
 .box-anchor {
     @apply content-[] absolute inset-0 z-[1] pointer-events-none;
 }
@@ -337,10 +227,6 @@ body {
 
 .box-img-overlay {
     @apply absolute inset-0 rounded-sm overflow-auto;
-}
-
-.card-img-top {
-    @apply rounded-t-md !important;
 }
 
 /* End Box Styles */

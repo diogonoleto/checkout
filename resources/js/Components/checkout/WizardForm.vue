@@ -1,9 +1,9 @@
 <script>
 import { mask } from "vue-the-mask";
-import NavLink from "@/Components/NavLink.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { phone, cnpjCpf } from "@/Validators/Validators.ts";
+import OfferList from "./OfferList.vue";
 
 const shippingTest = {
     name: "Diogo Noleto",
@@ -12,18 +12,16 @@ const shippingTest = {
     document: "740.368.072-34",
     phone: "(92) 98158-4393",
     address: {
-        zipcode: "",
-        number: "",
+        zipcode: "69055080",
+        number: "96",
     },
 };
 
 export default {
+    components: { OfferList },
     name: "WizardForm",
-    directives: { mask },
-    components: {
-        NavLink,
-    },
     props: ["offers"],
+    directives: { mask },
     setup() {
         return {
             v$: useVuelidate(),
@@ -79,13 +77,24 @@ export default {
             deliveryMethods: [
                 {
                     id: "defautl",
-                    name: "Defautl",
+                    name: "Entrega Padrão",
+                    description: "Envio por correios",
                     icon: "bi bi-upc",
+                    price: "Grátis",
+                    active: true,
                 },
                 {
                     id: "entrega_gratis",
                     name: "Entrega Gratis",
                     icon: "bi bi-upc",
+                    description: "Envio por correios",
+                    icon: "bi bi-upc",
+                    price: "R$ 10,00",
+                    discont: {
+                        description: "Express (c/ desconto de R$ 10,00)",
+                        price: "R$ 12,00"
+                    } ,
+                    active: false,
                 },
             ],
             steps: [
@@ -192,9 +201,9 @@ export default {
             }
 
             const payload = [];
-            payload.push({ shipping: this.shipping });
-            payload.push({ delivery: this.delivery });
-            payload.push({ payment: this.payment });
+            payload['shipping'] = this.shipping;
+            payload['delivery'] = this.delivery;
+            payload['payment'] = this.payment;
 
             this.$emit("finalize-purchase", payload);
 
@@ -214,10 +223,6 @@ export default {
                     s.icon = "bi bi-check2-all";
                 }
             });
-        },
-        checkOffer(e, item) {
-            const a = e.target.checked ? "add-cart" : "remove-cart";
-            this.$emit(a, item);
         },
         getCep() {
             const cep = this.shipping.address.zipcode.replace(/\D/g, "");
@@ -242,6 +247,9 @@ export default {
                         console.error("Erro:", error);
                     });
             }
+        },
+        checkOffer (e) {
+            this.$emit(e.type, e.item);
         },
     },
 };
@@ -587,11 +595,13 @@ export default {
                 <div class="p-8">
                     <div class="grid grid-cols-12 gap-3 mb-6">
                         <div class="xl:col-span-12 col-span-12">
-                            <div>Endereço de Entrega</div>
-                            <div class="rounded-md border border-1 mt-2">
-                                <div class="p-6">
+                            <div class="font-bold">ENDEREÇO DE ENTREGA</div>
+                            <div
+                                class="rounded-md border border-1 mt-2 bg-gray-200"
+                            >
+                                <div class="p-6 text-base">
                                     <i
-                                        class="bi bi-house-fill text-lg mr-3"
+                                        class="bi bi-house-fill text-md mr-3"
                                     ></i>
                                     {{ shipping.address.street }},
                                     {{ shipping.address.number }}
@@ -608,26 +618,40 @@ export default {
                             </div>
                         </div>
                         <div class="xl:col-span-12 col-span-12 mt-3">
-                            <div>Método de Entrega</div>
+                            <div class="font-bold">MÉTODO DE ENTREGA</div>
                             <template
                                 v-for="method in deliveryMethods"
                                 :key="method.id"
                             >
                                 <label
-                                    class="rounded-md border border-1 mt-2 p-6 block"
+                                    class="flex relative items-center rounded-md border border-2 mt-3 p-6 block hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-gray-100"
                                     :htmlFor="'delivery-method-' + method.id"
                                     :class="{
                                         'border-red': v$.delivery.method.$error,
                                     }"
                                 >
                                     <input
+                                        :checked="delivery.active"
                                         v-model="delivery.method"
                                         :value="method.id"
                                         class="mr-2 form-radio"
                                         type="radio"
+                                        name="delivery-method"
                                         :id="'delivery-method-' + method.id"
                                     />
-                                    {{ method.name }}
+                                    <div class="flex-grow">
+                                        <div class="font-semibold">{{ method.name }}</div>
+                                        <div class="text-gray-700">{{ method.description }}</div>
+                                    </div>
+                                    <div class="font-semibold text-red line-through mr-1" v-if="method.discont">
+                                        {{ method.discont.price }}
+                                    </div>
+                                    <div class="font-semibold">
+                                        {{ method.price }}
+                                    </div>
+                                    <div class="absolute -top-[0.6rem] right-3 bg-yellow text-white rounded-md text-xs px-2" v-if="method.discont?.description">
+                                        {{ method.discont.description }}
+                                    </div>
                                 </label>
                             </template>
                         </div>
@@ -665,7 +689,7 @@ export default {
                         >
                             <div class="xl:col-span-4 col-span-12">
                                 <label
-                                    class="flex justify-between items-center px-4 py-4 border border-1 rounded-md block"
+                                    class="flex justify-between items-center px-4 py-4 border border-1 rounded-md block hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-gray-100"
                                     :class="{
                                         'border-red': v$.payment.method.$error,
                                     }"
@@ -696,7 +720,7 @@ export default {
                             <div class="form-floating">
                                 <label
                                     htmlFor="payment[card_number]"
-                                    class="form-label"
+                                    class="!text-[0.75rem] after:bg-white after:dark:bg-bodybg after:rounded-md after:inset-y-4 after:inset-x-[0.375rem]"
                                 >
                                     Número do cartão
                                 </label>
@@ -721,7 +745,7 @@ export default {
                             <div class="form-floating">
                                 <label
                                     htmlFor="payment[card_expiry_date]"
-                                    class="form-label"
+                                    class="!text-[0.75rem] after:bg-white after:dark:bg-bodybg after:rounded-md after:inset-y-4 after:inset-x-[0.375rem]"
                                 >
                                     Validade
                                 </label>
@@ -746,7 +770,7 @@ export default {
                             <div class="form-floating">
                                 <label
                                     htmlFor="payment[cvv]"
-                                    class="form-label"
+                                    class="!text-[0.75rem] after:bg-white after:dark:bg-bodybg after:rounded-md after:inset-y-4 after:inset-x-[0.375rem]"
                                 >
                                     CVV
                                 </label>
@@ -770,7 +794,7 @@ export default {
                             <div class="form-floating">
                                 <label
                                     htmlFor="payment[card_name]"
-                                    class="form-label"
+                                    class="!text-[0.75rem] after:bg-white after:dark:bg-bodybg after:rounded-md after:inset-y-4 after:inset-x-[0.375rem]"
                                 >
                                     Titular do cartão
                                 </label>
@@ -794,7 +818,7 @@ export default {
                             <div class="form-floating">
                                 <label
                                     htmlFor="payment[document]"
-                                    class="form-label"
+                                    class="!text-[0.75rem] after:bg-white after:dark:bg-bodybg after:rounded-md after:inset-y-4 after:inset-x-[0.375rem]"
                                 >
                                     CPF/CNPJ
                                 </label>
@@ -822,7 +846,7 @@ export default {
                             <div class="form-floating">
                                 <label
                                     htmlFor="payment[document]"
-                                    class="form-label"
+                                    class="!text-[0.75rem] after:bg-white after:dark:bg-bodybg after:rounded-md after:inset-y-4 after:inset-x-[0.375rem]"
                                 >
                                     Parcelas*
                                 </label>
@@ -843,68 +867,7 @@ export default {
                         </div>
                     </div>
                     <div class="mt-8 mb-8">
-                        <p class="text-[1.3rem] font-semibold mb-1 text-center">
-                            🎉 Você possui 1 oferta!
-                        </p>
-                        <p class="text-center mb-4">
-                            Oportunidade única de adquirir produtos incríveis
-                            com um super desconto!
-                        </p>
-                        <div>
-                            <template
-                                v-for="(offer, index) in offers"
-                                :key="index"
-                            >
-                                <ul>
-                                    <li
-                                        class="py-4 pl-4 pr-5 text-[1.3rem] bg-[#e73f5d] text-white font-semibold"
-                                    >
-                                        {{ offer.title }}
-                                    </li>
-                                    <li
-                                        class="py-4 pl-4 pr-5 bg-[#fffbe4] border border-red border-2 !border-t-0 !border-b-2 border-dashed rounded-b-md"
-                                    >
-                                        <div class="w-100">
-                                            <p v-html="offer.description"></p>
-                                        </div>
-                                        <div class="w-100 py-2">
-                                            <div
-                                                class="rounded-md border border-1 !border-b-4 bg-white hover:border-blue"
-                                            >
-                                                <label
-                                                    class="flex items-center block py-4 pl-4 pr-5"
-                                                    :htmlFor="'offer-' + index"
-                                                >
-                                                    <input
-                                                        :value="offer.item.img"
-                                                        class="form-checkbox"
-                                                        type="checkbox"
-                                                        :id="'offer-' + index"
-                                                        @change="
-                                                            checkOffer(
-                                                                $event,
-                                                                offer.item
-                                                            )
-                                                        "
-                                                    />
-                                                    <label class="mx-2 avatar"
-                                                        ><img
-                                                            :src="
-                                                                offer.item.img
-                                                            "
-                                                    /></label>
-                                                    <label
-                                                        class="text-[0.75rem]"
-                                                    >
-                                                        {{ offer.confirm }}
-                                                    </label>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </template>
-                        </div>
+                        <offer-list :offers="offers" @check-offer="checkOffer($event)"/>
                     </div>
                     <div class="grid grid-cols-3 gap-3">
                         <div class="xl:col-span-1 col-span-3">

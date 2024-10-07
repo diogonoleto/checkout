@@ -25,7 +25,8 @@ export default {
         },
     },
     methods: {
-        addCoupon() {
+        addCoupon () {
+            this.v$.form.$touch();
             this.coupon = { ...this.form };
         },
     },
@@ -53,7 +54,10 @@ export default {
                 <div class="relative mt-2 rounded-md shadow-sm">
                     <input
                         v-model="form.name"
-                        class="block w-full rounded-md border-0 py-4 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        :class="{
+                            '!border-red !border-1': v$.form.name.$error,
+                        }"
+                        class="block w-full rounded-md py-4 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     <div
                         class="absolute inset-y-0 right-0 flex items-center m-2"

@@ -35,12 +35,13 @@ export default {
             Montserrat: ["Montserrat", "sans-serif"],
         },
         gridTemplateColumns: {
+            '2': 'repeat(2, minmax(0, 1fr))',
             '3': 'repeat(3, minmax(0, 1fr))',
             '12': 'repeat(12, minmax(0, 1fr))',
             '26': 'repeat(26, minmax(0, 1fr))',
         },
         fontSize: {
-            defaultsize: '0.813rem',
+            defaultsize: '18px',
             xs: '0.75rem',
             sm: '0.875rem',
             base: '1rem',
@@ -87,7 +88,7 @@ export default {
                 light: "rgb(var(--light))",
                 orange: "rgb(var(--orange))",
                 pink: "rgb(var(--pink))",
-                teal: "rgb(var(-teal))",
+                teal: "rgb(var(--teal))",
                 purple: "rgb(var(--purple))",
                 defaulttextcolor: "rgb(var(--default-text-color))",
                 defaultborder: "rgb(var(--default-border))",

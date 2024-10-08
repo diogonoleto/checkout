@@ -2,6 +2,11 @@
 export default {
     name: "PixPage",
     props: ["cart"],
+    methods: {
+        copyDoiToClipboard (doi) {
+            navigator.clipboard.writeText(doi)
+        },
+    }
 };
 </script>
 
@@ -43,7 +48,10 @@ export default {
                 escolha a opção Ler QR Code
             </div>
             <div>Aponte a câmera do seu celular QR Code PIX</div>
-            <div>qrcode</div>
+            <div>
+                <!-- <img src=""> -->
+                 <i class="bi bi-qr-code text-[10em]"></i>
+            </div>
             <div>Valor a pagar</div>
             <div class="font-semibold h3">{{ cart.total }}</div>
             <div>
@@ -52,20 +60,21 @@ export default {
                 Internet Banking (banco online). Neste caso, copie o código
                 clicando no botão abaixo:
             </div>
-            <div
-                class="bg-secundary border font-semibold rounded-md px-4 py-3 mt-2"
+            <button
+                class="border font-semibold rounded-md px-4 py-3 mt-2 hover:bg-primary/10 focus:bg-primary focus:text-white"
+                @click="copyDoiToClipboard(cart.id)"
             >
                 Clique aqui para copiar o código pix
-            </div>
+            </button>
         </div>
         <div class="xl:col-span-2 col-span-2">
-            <div class="p-[3rem] my-3">
+            <div class="p-[3rem]">
                 <div>
                     <div
-                        class="flex sm:flex-row flex-col items-center justify-between"
+                        class="flex sm:flex-row flex-col items-center justify-between pb-[3rem]"
                     >
                         <div
-                            class="grid grid-cols-2 gap-x-8 sm:gap-x-16 gap-y-1"
+                            class="grid grid-cols-2 gap-x-4 gap-y-1"
                         >
                             <p class="text-4xl">PEDIDO</p>
                             <p class="text-4xl">#{{ cart.id }}</p>
@@ -74,7 +83,7 @@ export default {
                             <p class="font-medium">TOTAL PEDIDO</p>
                             <p class="font-medium">{{ cart.total }}</p>
                         </div>
-                        <div class="flex py-24 rounded-l-2xl">
+                        <div class="flex rounded-l-2xl">
                             <div class="place-self-center">
                                 <!-- <img
                                     class="w-96 rounded-8"
@@ -94,7 +103,7 @@ export default {
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pb-[3rem]">
                         <div class="text-md">
                             <p class="text-xl font-medium">
                                 Informações do Cliente
@@ -135,7 +144,7 @@ export default {
                             <p class="">ID Transferência:</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-12 py-3">
+                    <div class="grid grid-cols-12 pb-[3rem]">
                         <div
                             class="col-span-8 font-medium text-md border-b py-3"
                         >
@@ -219,7 +228,7 @@ export default {
                             {{ cart.total }}
                         </div>
                     </div>
-                    <div class="mt-3">
+                    <div class="pb-[3rem]">
                         <p class="font-medium">
                             Agradecemos o seu pagamento a equipe DPay enviará um
                             email com os datalhes do seu pedido.
@@ -246,8 +255,7 @@ export default {
                         </div>
                     </div>
                 </div>
-
-                <div class="text-center mt-8">
+                <div class="text-center">
                     <button
                         :href="route('checkout')"
                         class="rounded-md text-sm font-semibold py-3 px-4 bg-primary text-white hover:bg-primary-700 uppercase"

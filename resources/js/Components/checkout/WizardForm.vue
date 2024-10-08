@@ -128,7 +128,7 @@ export default {
                 },
             ],
             currentStep: 0,
-            progressWidth: '33'
+            progressWidth: "33",
         };
     },
     validations: {
@@ -170,7 +170,7 @@ export default {
         backshipping() {
             this.v$.shipping.$reset();
             this.currentStep = 0;
-            this.progressWidth = '33'
+            this.progressWidth = "33";
             this.mStep();
         },
         submitshipping() {
@@ -179,7 +179,7 @@ export default {
                 return false;
             }
             this.currentStep = 1;
-            this.progressWidth = '66'
+            this.progressWidth = "66";
             this.mStep();
         },
         submitDelivery() {
@@ -188,7 +188,7 @@ export default {
                 return false;
             }
             this.currentStep = 2;
-            this.progressWidth = '100'
+            this.progressWidth = "100";
             this.mStep();
         },
         submitPayment() {
@@ -219,7 +219,7 @@ export default {
             this.$emit("finalize-purchase", payload);
 
             this.currentStep = 1;
-            this.progressWidth = '33'
+            this.progressWidth = "33";
             this.mStep();
         },
         mStep() {
@@ -269,9 +269,7 @@ export default {
 
 <template>
     <div>
-        <nav
-            class="btn-group p-4"
-        >
+        <nav class="btn-group p-4">
             <div class="grid grid-cols-3 gap-3 steps">
                 <template v-for="(step, index) in steps" :key="index">
                     <div class="xl:col-span-1 col-span-3 text-center">
@@ -292,8 +290,9 @@ export default {
                 aria-valuemin="0"
                 aria-valuemax="100"
             >
-                <div class="progress-bar bg-primary-gradient"
-                :class="'w-'+progressWidth"
+                <div
+                    class="progress-bar bg-primary-gradient"
+                    :class="'w-' + progressWidth"
                 ></div>
             </div>
         </nav>
@@ -653,7 +652,6 @@ export default {
                                     }"
                                 >
                                     <input
-                                        :checked="delivery.active"
                                         v-model="delivery.method"
                                         :value="method.id"
                                         class="mr-2 form-radio"

@@ -480,28 +480,74 @@ body {
 
 /* End list-group Styles */
 
-
-/* Start wizard Styles */
-
-.steps div:not(:last-child) a:before {
-    position: absolute;
-    content: "";
-    background: #e5e5e5;
-    width: 150%;
-    height: 2px;
-    top: 50%;
-    transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    left: 100%;
-}
-
 /* Start Spinner Styles */
-.ti-spinner {
+
+.spinner {
     @apply animate-spin inline-block w-2 h-2 border-[1px] border-current border-t-transparent rounded-full;
 }
 
 /* End Spinner Styles */
 
+/* Start Progress Styles */
+
+.progress {
+    display: flex;
+    height: .75rem;
+    width: 100%;
+    border-radius: .25rem;
+    background-color: rgb(var(--light))
+}
+
+.progress.progress-xs,.progress-stacked.progress-xs {
+    height: .3125rem
+}
+
+.progress.progress-sm,.progress-stacked.progress-sm {
+    height: .5rem
+}
+
+.progress.progress-lg,.progress-stacked.progress-lg {
+    height: 1rem
+}
+
+.progress.progress-xl,.progress-stacked.progress-xl {
+    height: 1.25rem
+}
+
+.progress-stacked {
+    background-color: rgb(var(--light))
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-start-start-radius: 9999px;
+    border-end-start-radius: 9999px;
+    background-color: rgb(var(--primary));
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity))
+}
+
+@keyframes progress-animate {
+    0% {
+        width: 0px
+    }
+}
+
+.progress-animate,.progress-animate .progress-bar {
+    position: relative;
+    border-radius: .625rem
+}
+
+.w-33 {
+    width: 33.333333%
+}
+
+.w-66 {
+    width: 66.666666%
+}
+
+.w-100 {
+    width: 100%
+}

@@ -5,29 +5,29 @@ import { required, email } from "@vuelidate/validators";
 import { phone, cnpjCpf } from "@/Validators/Validators.ts";
 import OfferList from "./OfferList.vue";
 
-const shippingTest = {
-    name: "",
-    email: "",
-    birthday: "",
-    document: "",
-    phone: "",
-    address: {
-        zipcode: "",
-        number: "",
-    },
-};
-
 // const shippingTest = {
-//     name: "Diogo Noleto",
-//     email: "diogo@gmail.com",
-//     birthday: "04/08/1984",
-//     document: "740.368.072-34",
-//     phone: "(92) 98158-4393",
+//     name: "",
+//     email: "",
+//     birthday: "",
+//     document: "",
+//     phone: "",
 //     address: {
-//         zipcode: "69055080",
-//         number: "96",
+//         zipcode: "",
+//         number: "",
 //     },
 // };
+
+const shippingTest = {
+    name: "Diogo Noleto",
+    email: "diogo@gmail.com",
+    birthday: "04/08/1984",
+    document: "740.368.072-34",
+    phone: "(92) 98158-4393",
+    address: {
+        zipcode: "69055080",
+        number: "96",
+    },
+};
 
 export default {
     components: { OfferList },
@@ -80,11 +80,6 @@ export default {
                     name: "PIX",
                     icon: "bi bi-qr-code",
                 },
-                {
-                    id: "boleto",
-                    name: "BOLETO",
-                    icon: "bi bi-upc",
-                },
             ],
             deliveryMethods: [
                 {
@@ -104,8 +99,8 @@ export default {
                     price: "R$ 10,00",
                     discont: {
                         description: "Express (c/ desconto de R$ 10,00)",
-                        price: "R$ 12,00"
-                    } ,
+                        price: "R$ 12,00",
+                    },
                     active: false,
                 },
             ],
@@ -133,6 +128,7 @@ export default {
                 },
             ],
             currentStep: 0,
+            progressWidth: '33'
         };
     },
     validations: {
@@ -171,17 +167,19 @@ export default {
         this.mStep();
     },
     methods: {
-        backShopping() {
+        backshipping() {
             this.v$.shipping.$reset();
             this.currentStep = 0;
+            this.progressWidth = '33'
             this.mStep();
         },
-        submitShopping() {
+        submitshipping() {
             this.v$.shipping.$touch();
             if (this.v$.shipping.$error) {
                 return false;
             }
             this.currentStep = 1;
+            this.progressWidth = '66'
             this.mStep();
         },
         submitDelivery() {
@@ -190,6 +188,7 @@ export default {
                 return false;
             }
             this.currentStep = 2;
+            this.progressWidth = '100'
             this.mStep();
         },
         submitPayment() {
@@ -213,13 +212,14 @@ export default {
             }
 
             const payload = [];
-            payload['shipping'] = this.shipping;
-            payload['delivery'] = this.delivery;
-            payload['payment'] = this.payment;
+            payload["shipping"] = this.shipping;
+            payload["delivery"] = this.delivery;
+            payload["payment"] = this.payment;
 
             this.$emit("finalize-purchase", payload);
 
             this.currentStep = 1;
+            this.progressWidth = '33'
             this.mStep();
         },
         mStep() {
@@ -260,7 +260,7 @@ export default {
                     });
             }
         },
-        checkOffer (e) {
+        checkOffer(e) {
             this.$emit(e.type, e.item);
         },
     },
@@ -270,7 +270,7 @@ export default {
 <template>
     <div>
         <nav
-            class="btn-group p-4 border !border-t-0 !border-s-0 !border-e-0 border-b-1"
+            class="btn-group p-4"
         >
             <div class="grid grid-cols-3 gap-3 steps">
                 <template v-for="(step, index) in steps" :key="index">
@@ -285,6 +285,16 @@ export default {
                         </a>
                     </div>
                 </template>
+            </div>
+            <div
+                class="progress mt-2 progress-animate progress-xs"
+                :aria-valuenow="progressWidth"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            >
+                <div class="progress-bar bg-primary-gradient"
+                :class="'w-'+progressWidth"
+                ></div>
             </div>
         </nav>
         <div>
@@ -594,7 +604,7 @@ export default {
                         >
                             <button
                                 class="rounded-md text-sm font-semibold py-3 px-4 bg-primary text-white hover:bg-primary-700 uppercase"
-                                @click="submitShopping()"
+                                @click="submitshipping()"
                             >
                                 <span>PRÓXIMO</span>
                                 <i class="bi bi-chevron-right ms-4"></i>
@@ -652,16 +662,26 @@ export default {
                                         :id="'delivery-method-' + method.id"
                                     />
                                     <div class="flex-grow">
-                                        <div class="font-semibold">{{ method.name }}</div>
-                                        <div class="text-gray-700">{{ method.description }}</div>
+                                        <div class="font-semibold">
+                                            {{ method.name }}
+                                        </div>
+                                        <div class="text-gray-700">
+                                            {{ method.description }}
+                                        </div>
                                     </div>
-                                    <div class="font-semibold text-red line-through mr-1" v-if="method.discont">
+                                    <div
+                                        class="font-semibold text-red line-through mr-1"
+                                        v-if="method.discont"
+                                    >
                                         {{ method.discont.price }}
                                     </div>
                                     <div class="font-semibold">
                                         {{ method.price }}
                                     </div>
-                                    <div class="absolute -top-[0.6rem] right-3 bg-yellow text-white rounded-md text-xs px-2" v-if="method.discont?.description">
+                                    <div
+                                        class="absolute -top-[0.6rem] right-3 bg-yellow text-white rounded-md text-xs px-2"
+                                        v-if="method.discont?.description"
+                                    >
                                         {{ method.discont.description }}
                                     </div>
                                 </label>
@@ -672,7 +692,7 @@ export default {
                         <div class="xl:col-span-1 col-span-3">
                             <button
                                 class="rounded-md text-sm font-semibold py-3 px-4 border border-black hover:bg-primary-700 uppercase text-left"
-                                @click="backShopping()"
+                                @click="backshipping()"
                             >
                                 <i class="bi bi-chevron-left me-4"></i>
                                 <span>VOLTAR</span>
@@ -699,7 +719,9 @@ export default {
                             v-for="method in paymentMethods"
                             :key="method.id"
                         >
-                            <div class="xl:col-span-4 col-span-12">
+                            <div
+                                class="xl:col-span-4 col-span-12 first:xl:col-start-3"
+                            >
                                 <label
                                     class="flex justify-between items-center px-4 py-4 border border-1 rounded-md block hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-gray-100"
                                     :class="{
@@ -879,13 +901,16 @@ export default {
                         </div>
                     </div>
                     <div class="mt-8 mb-8">
-                        <offer-list :offers="offers" @check-offer="checkOffer($event)"/>
+                        <offer-list
+                            :offers="offers"
+                            @check-offer="checkOffer($event)"
+                        />
                     </div>
                     <div class="grid grid-cols-3 gap-3">
                         <div class="xl:col-span-1 col-span-3">
                             <button
                                 class="rounded-md text-sm font-semibold py-3 px-4 border border-black hover:bg-primary-700 uppercase text-left"
-                                @click="submitShopping()"
+                                @click="submitshipping()"
                             >
                                 <i class="bi bi-chevron-left me-4"></i>
                                 <span>VOLTAR</span>

@@ -41,11 +41,13 @@ export default {
                         },
                     },
                 ],
+                id: '454432635',
                 discont: "10% - R$ 31,80",
                 delivery_fee: "+ R$ 29,00",
                 service_fee: "18% + R$ 45,29",
                 subTotal: "R$ 318,00",
                 total: "R$ 1.387,00",
+                requestDate: "08/10/2024"
             },
             confirmation: null,
         };
@@ -62,6 +64,9 @@ export default {
         },
         finalizePurchase(e) {
             this.confirmation = e.payment.method;
+            this.cart.payment = e.payment;
+            this.cart.shipping = e.shipping;
+            this.cart.delivery = e.delivery;
         },
     },
 };
@@ -94,7 +99,7 @@ export default {
             <div class="xl:col-span-4 col-span-12">
                 <div class="box">
                     <div
-                        class="p-4 text-[1.2rem] rounded-t-sm bg-primary text-white"
+                        class="p-4 text-[1.2rem] rounded-t-md bg-primary text-white"
                     >
                         Resumo do Pedido
                         <span
@@ -151,7 +156,7 @@ export default {
                                                 <span
                                                     class="ms-1 text-[#8c9097] dark:text-white/50 text-[0.6875rem]"
                                                 >
-                                                    <s>{{ c.price }}</s>
+                                                    <s class="text-red">{{ c.price }}</s>
                                                 </span>
                                                 {{ c.amount }}
                                             </p>
@@ -225,7 +230,7 @@ export default {
                                 </div>
                             </div>
                         </div>
-                        <div class="p-4 bg-primary/100 rounded-b-sm text-white">
+                        <div class="p-4 bg-primary/100 rounded-b-md text-white">
                             <div class="font-semibold text-sm text-dark text-center">
                                 <i class="bi bi-shield-fill-check"></i>
                                 COMPRA 100% SEGURA
@@ -235,12 +240,8 @@ export default {
                 </div>
             </div>
         </div>
-        <div
-            class="grid grid-cols-12 gap-x-6"
-            v-else-if="confirmation == 'boleto'"
-        ></div>
         <div class="box overflow-hidden" v-else-if="confirmation == 'pix'">
-            <pix-page />
+            <pix-page :cart="cart" />
         </div>
         <div class="grid grid-cols-12 gap-x-6" v-else>
             <div class="xl:col-span-12 col-span-12">

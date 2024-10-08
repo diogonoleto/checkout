@@ -1,6 +1,7 @@
 <script>
 export default {
     name: "PixPage",
+    props: ["cart"],
 };
 </script>
 
@@ -13,27 +14,26 @@ export default {
                 Pague seu Pix dentro de <b>28:43</b> para garentir sua compra.
             </div>
             <div class="text-xs">Expirar em: 2025-10-07 23:59:59</div>
-            <div class="flex bg-warning font-semibold rounded-md px-4 py-3 mt-2">
+            <div
+                class="flex bg-warning font-semibold rounded-md px-4 py-3 mt-2"
+            >
                 <div class="flex-grow">Aguardando pagamento</div>
-                <div className="space-x-3 space-y-2 rtl:space-x-reverse">
+                <div class="space-x-3 space-y-2 rtl:space-x-reverse">
                     <div
-                        className="ti-spinner !animate-ping !border-transparent bg-white"
+                        class="spinner !animate-ping !border-transparent bg-white"
                         role="status"
                         aria-label="loading"
-                    >
-                    </div>
+                    ></div>
                     <div
-                        className="ti-spinner !animate-ping !border-transparent bg-white"
+                        class="spinner !animate-ping !border-transparent bg-white"
                         role="status"
                         aria-label="loading"
-                    >
-                    </div>
+                    ></div>
                     <div
-                        className="ti-spinner !animate-ping !border-transparent bg-white"
+                        class="spinner !animate-ping !border-transparent bg-white"
                         role="status"
                         aria-label="loading"
-                    >
-                    </div>
+                    ></div>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@ export default {
             <div>Aponte a câmera do seu celular QR Code PIX</div>
             <div>qrcode</div>
             <div>Valor a pagar</div>
-            <div class="font-semibold h3">R$ 198,20</div>
+            <div class="font-semibold h3">{{ cart.total }}</div>
             <div>
                 Você também pode pagar escolhendo a opção
                 <b>Pix Copia e Cola</b> no seu aplicativo de pagamento ou
@@ -68,11 +68,11 @@ export default {
                             class="grid grid-cols-2 gap-x-8 sm:gap-x-16 gap-y-1"
                         >
                             <p class="text-4xl">PEDIDO</p>
-                            <p class="text-4xl">#454432635</p>
+                            <p class="text-4xl">#{{ cart.id }}</p>
                             <p class="font-medium">DATA DO PEDIDO</p>
-                            <p class="font-medium">2024-10-07</p>
+                            <p class="font-medium">{{ cart.requestDate }}</p>
                             <p class="font-medium">TOTAL PEDIDO</p>
-                            <p class="font-medium">R$ 198,20</p>
+                            <p class="font-medium">{{ cart.total }}</p>
                         </div>
                         <div class="flex py-24 rounded-l-2xl">
                             <div class="place-self-center">
@@ -99,27 +99,39 @@ export default {
                             <p class="text-xl font-medium">
                                 Informações do Cliente
                             </p>
-                            <p class="">Diogo Noleto</p>
-                            <p class="">diogonoletodasilva@gmail.com</p>
-                            <p class="">+55(92) 9 3213-4123</p>
+                            <p class="">{{ cart.shipping.name }}</p>
+                            <p class="">{{ cart.shipping.email }}</p>
+                            <p class="">{{ cart.shipping.phone }}</p>
                         </div>
                         <div class="text-md">
                             <p class="text-xl font-medium">
                                 Informação de Entrega
                             </p>
                             <p class="">
-                                Expresso (Envio por Jadlog) - R$ 18,50
+                                {{ cart.shipping.delivery }}
                             </p>
                             <p class="">
-                                R. Des. Cândido Onório, 96 - Planalto, Manaus -
-                                AM, 69044-080, Brasil
+                                {{ cart.shipping.address.street }},
+                                {{ cart.shipping.address.number }}
+                                {{
+                                    cart.shipping.address.complement
+                                        ? ", " +
+                                          cart.shipping.address.complement
+                                        : ""
+                                }}, {{ cart.shipping.address.district }},
+                                {{ cart.shipping.address.city }}-{{
+                                    cart.shipping.address.state
+                                }},
+                                {{ cart.shipping.address.zipcode }}
                             </p>
                         </div>
                         <div class="text-md">
                             <p class="text-xl font-medium">
                                 Informação de Pagamento
                             </p>
-                            <p class="">Pagamento em: PIX</p>
+                            <p class="">
+                                Pagamento em: {{ cart.payment.method }}
+                            </p>
                             <p class="">ID Transferência:</p>
                         </div>
                     </div>
@@ -144,27 +156,31 @@ export default {
                         >
                             TOTAL
                         </div>
-                        <div class="col-span-12 border-b py-3">
-                            <div class="grid grid-cols-12">
+                        <div class="col-span-12">
+                            <div
+                                class="grid grid-cols-12 py-3 border-b font-semibold"
+                                v-for="(item, index) in cart.items"
+                                :key="index"
+                            >
                                 <p
                                     class="col-start-1 col-end-8 sm:col-span-8 text-lg font-medium"
                                 >
-                                    3 gramas/dia
+                                    {{ item.name }}
                                 </p>
                                 <p
                                     class="invisible sm:visible self-center text-right"
                                 >
-                                    R$ 179,70
+                                    {{ item.price }}
                                 </p>
                                 <p
                                     class="invisible sm:visible self-center text-right"
                                 >
-                                    1
+                                    {{ item.qtd }}
                                 </p>
                                 <p
                                     class="col-end-13 col-span-3 sm:col-span-2 self-center text-right"
                                 >
-                                    R$ 179,70
+                                    {{ item.amount }}
                                 </p>
                             </div>
                         </div>
@@ -174,7 +190,7 @@ export default {
                             SUBTOTAL
                         </p>
                         <p class="col-span-4 text-right text-lg border-b py-3">
-                            R$ 179,70
+                            {{ cart.subtotal }}
                         </p>
                         <p
                             class="col-span-8 self-center font-medium py-3 border-b"
@@ -182,7 +198,7 @@ export default {
                             ENTREGA
                         </p>
                         <p class="col-span-4 text-right text-lg border-b py-3">
-                            R$ 18,50
+                            {{ cart.delivery_fee }}
                         </p>
                         <p
                             class="col-span-8 self-center font-medium py-3 border-b"
@@ -190,7 +206,7 @@ export default {
                             DESCONTO
                         </p>
                         <p class="col-span-4 text-right text-lg border-b py-3">
-                            R$ 0,00
+                            {{ cart.discont }}
                         </p>
                         <p
                             class="col-span-8 self-center text-2xl font-medium py-3"
@@ -200,7 +216,7 @@ export default {
                         <div
                             class="col-span-4 text-right text-2xl font-medium py-3"
                         >
-                            R$ 198,20
+                            {{ cart.total }}
                         </div>
                     </div>
                     <div class="mt-3">

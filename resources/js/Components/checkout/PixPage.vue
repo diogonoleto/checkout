@@ -12,7 +12,7 @@ export default {
 
 <template>
     <div class="grid grid-cols-2 gap-x-6 p-12 text-base">
-        <div class="xl:col-span-1 col-span-2 p-4">
+        <div class="xl:col-span-1 col-span-2 p-4 self-center">
             <div class="font-semibold text-[66px] mb-6">Quase lá..</div>
             <div>Seu PIX foi gerado</div>
             <div>
@@ -91,10 +91,10 @@ export default {
                                     alt="logo"
                                 /> -->
                                 <i
-                                    class="bi bi-box ms-2 text-[3rem] justify-self-end pr-3"
+                                    class="bi bi-box me-4 text-[3rem] justify-self-end pr-3"
                                 ></i>
                             </div>
-                            <div class="col-span-2 border-l text-md">
+                            <div class="col-span-2 text-md">
                                 <p class="font-medium">CREABOX COMERCIO LTDA</p>
                                 <p class="">Curitiba - Paraná - Brasil</p>
                                 <p class="">suporte@creabox.com.br</p>
